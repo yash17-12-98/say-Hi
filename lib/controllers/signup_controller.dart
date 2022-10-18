@@ -66,15 +66,20 @@ class SignupController extends BaseController {
 
   Future<void> signup() async {
     if (formKey.currentState!.validate()) {
+      isLoad.value = true;
       var imgFile = await checkFileImg();
       var isUploaded = await uploadFile(imgFile);
       var imageUrl = await getDownloadedFileUrl(isUploaded);
       Common.logger.d("FILE UPLOADED FOR $imageUrl");
       FirebaseService.instance
-          .createUserWithEmailAndPassword(nameController.text, imageUrl,
-              emailController.text, confirmPwdController.text)
+          .createUserWithEmailAndPassword(
+              name: nameController.text,
+              imageUrl: imageUrl,
+              email: emailController.text,
+              password: confirmPwdController.text)
           .then((value) {
         Get.back();
+        isLoad.value = false;
         Common.showSnackBar(
             title: "SIGNUP", subtitle: "Account created successfully");
       });

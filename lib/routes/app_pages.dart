@@ -14,4 +14,9 @@ List<GetPage> pages = [
     page: () => const SignupScreen(),
     binding: SignupBinding(),
   ),
+  GetPage(
+    name: Routes.profile,
+    page: () => const ProfileScreen(),
+    binding: ProfileBinding(),
+  ),
 ];

@@ -21,14 +21,14 @@ class Common {
     return null;
   }
 
-  static showSnackBar({title, subtitle}) {
+  static showSnackBar({title, subtitle, color}) {
     Get.snackbar(
       title,
       subtitle,
       colorText: Colors.white,
       icon: const Icon(Icons.person, color: Colors.white),
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: color,
     );
   }
 }

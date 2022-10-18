@@ -65,22 +65,6 @@ class SignupScreen extends GetView<SignupController> {
                                             ).image,
                                 ),
                               ),
-                              // child: Obx(
-                              //   () => CircleAvatar(
-                              //     radius: 50.0,
-                              //     backgroundColor: Colors.blue,
-                              //     backgroundImage: controller.updateImage.value == false
-                              //         ? Image.asset(
-                              //             ImagePath.userIcon,
-                              //             color: Colors.white,
-                              //             scale: 6.5,
-                              //           ).image
-                              //         : Image.file(
-                              //             controller.imageFile!,
-                              //             fit: BoxFit.fill,
-                              //           ).image,
-                              //   ),
-                              // ),
                             ),
                             const SizedBox(
                               width: 15.0,
@@ -136,8 +120,9 @@ class SignupScreen extends GetView<SignupController> {
                 ),
               ),
             )),
-        // const CircularProgressIndicator(),
-        const ModalBarrier(),
+        Obx(() => CommonLoaderOverlay(
+              visible: controller.isLoad.value,
+            ))
       ],
     );
   }
