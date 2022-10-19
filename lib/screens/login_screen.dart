@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfire/utils/util.dart';
 import 'package:get/get.dart';
 import '../controllers/controller.dart';
 import '../routes/page_routes.dart';
-import '../widgets/common_separator.dart';
+import '../utils/util.dart';
 import '../widgets/widget.dart';
 
 class LoginScreen extends GetView<LoginController> {
@@ -23,7 +22,7 @@ class LoginScreen extends GetView<LoginController> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   const Text(
-                    "Say Hi!",
+                    "Say H!",
                     style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,

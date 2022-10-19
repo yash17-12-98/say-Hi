@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutterfire/utils/firebase_service.dart';
 import 'package:get/get.dart';
 import '../routes/route.dart';
+import '../utils/util.dart';
 import 'controller.dart';
 
 class LoginController extends BaseController {
@@ -20,10 +20,12 @@ class LoginController extends BaseController {
       isLoad.value = true;
       FirebaseService.instance
           .signInUserWithEmailAndPassword(
-          email: emailController.text, password: pwdController.text)
+              email: emailController.text, password: pwdController.text)
           .then((value) {
         isLoad.value = false;
-        Get.toNamed(Routes.profile);
+        if (value != null) {
+          Get.toNamed(Routes.profile);
+        }
       });
     }
   }

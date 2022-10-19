@@ -65,6 +65,7 @@ class SignupController extends BaseController {
   }
 
   Future<void> signup() async {
+    Get.focusScope!.unfocus();
     if (formKey.currentState!.validate()) {
       isLoad.value = true;
       var imgFile = await checkFileImg();
@@ -78,10 +79,12 @@ class SignupController extends BaseController {
               email: emailController.text,
               password: confirmPwdController.text)
           .then((value) {
-        Get.back();
         isLoad.value = false;
-        Common.showSnackBar(
-            title: "SIGNUP", subtitle: "Account created successfully");
+        if (value != null) {
+          Get.back();
+          Common.showSnackBar(
+              title: "SIGNUP", subtitle: "Account created successfully");
+        }
       });
     }
   }

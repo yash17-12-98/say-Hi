@@ -12,22 +12,33 @@ class FirebaseService {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  bool get isSignedIn => auth.currentUser != null;
+
+  String get uid => auth.currentUser!.uid;
+
   Future<User?> getCurrentUser() async {
     return auth.currentUser;
   }
 
-  Future<void> createUserWithEmailAndPassword(
+  Future createUserWithEmailAndPassword(
       {String? name, String? imageUrl, String? email, String? password}) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email!, password: password!);
 
       UserModel userModel = UserModel(
-          name: name, imageUrl: imageUrl, email: email, password: password);
+          name: name,
+          imageUrl: imageUrl,
+          email: email,
+          password: password,
+          uid: userCredential.user!.uid);
       Common.logger.i("User INFO: ${userModel.toMap()}");
       Common.logger.i("UserCredential: $userCredential");
-      DatabaseMethods.addUserInfoToDb(
+      await DatabaseService.addDataToDb(Common.userCollectionName,
           userCredential.user!.uid, userModel.toMap());
+      await userSignOut();
+
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Common.showSnackBar(
@@ -39,18 +50,25 @@ class FirebaseService {
             title: 'Account Exist',
             subtitle: 'The account already exists for that email',
             color: Colors.red);
+      } else {
+        Common.showSnackBar(
+            title: 'Something went wrong',
+            subtitle: e.message,
+            color: Colors.red);
       }
     } catch (e) {
       Common.logger.e("Exception: $e");
     }
+    return null;
   }
 
-  Future<void> signInUserWithEmailAndPassword(
+  Future signInUserWithEmailAndPassword(
       {String? email, String? password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email!, password: password!);
       Common.logger.i("UserCredential: ${userCredential.user}");
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Common.showSnackBar(
@@ -66,6 +84,7 @@ class FirebaseService {
         Common.logger.e("Exception: $e");
       }
     }
+    return null;
   }
 
   Future<void> userSignOut() async {

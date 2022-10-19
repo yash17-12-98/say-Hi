@@ -15,25 +15,16 @@ class ProfileScreen extends GetView<ProfileController> {
       alignment: Alignment.center,
       children: [
         Scaffold(
-            appBar: AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                padding: EdgeInsets.zero,
-                iconSize: 30.0,
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 30,
+            appBar: CommonAppBar(
+              title: 'Profile',
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.logout),
                   color: Colors.blue,
+                  tooltip: 'Log out',
+                  onPressed: () => controller.onSignOut(),
                 ),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              title: const Text(
-                'Create an account',
-                style: TextStyle(color: Colors.blue, fontSize: 25),
-              ),
+              ],
             ),
             body: SafeArea(
               child: Padding(
@@ -44,41 +35,35 @@ class ProfileScreen extends GetView<ProfileController> {
                     key: controller.formKey,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                // await controller.updateImage();
-                              },
-                              child: Obx(
-                                () => CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      controller.imageFile.value == null
-                                          ? Image.asset(
-                                              ImagePath.userIcon,
-                                              color: Colors.white,
-                                              scale: 5.5,
-                                            ).image
-                                          : Image.file(
-                                              controller.imageFile.value!,
-                                              fit: BoxFit.fill,
-                                            ).image,
-                                ),
-                              ),
+                        GestureDetector(
+                          onTap: () async {
+                            // await controller.updateImage();
+                          },
+                          child: Obx(
+                            () => CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  controller.imageFile.value == null
+                                      ? Image.asset(
+                                          ImagePath.userIcon,
+                                          color: Colors.white,
+                                          scale: 5.5,
+                                        ).image
+                                      : Image.file(
+                                          controller.imageFile.value!,
+                                          fit: BoxFit.fill,
+                                        ).image,
                             ),
-                            const SizedBox(
-                              width: 15.0,
-                            ),
-                            Expanded(
-                              child: CommonTextField(
-                                controller: controller.nameController,
-                                textInputType: TextInputType.text,
-                                hintText: 'Name',
-                                validator: Validator.isNameValid,
-                              ),
-                            ),
-                          ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        CommonTextField(
+                          controller: controller.nameController,
+                          textInputType: TextInputType.text,
+                          hintText: 'Name',
+                          validator: Validator.isNameValid,
                         ),
                         const SizedBox(
                           height: 20.0,
@@ -112,7 +97,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         ),
                         CommonMaterialButton(
                             color: Colors.blue,
-                            text: 'Sign Up',
+                            text: 'Update',
                             onPressed: () {}),
                       ],
                     ),

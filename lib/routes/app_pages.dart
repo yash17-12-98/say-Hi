@@ -5,6 +5,11 @@ import 'page_routes.dart';
 
 List<GetPage> pages = [
   GetPage(
+    name: Routes.splash,
+    page: () => const SplashScreen(),
+    binding: SplashBinding(),
+  ),
+  GetPage(
     name: Routes.login,
     page: () => const LoginScreen(),
     binding: LoginBinding(),
