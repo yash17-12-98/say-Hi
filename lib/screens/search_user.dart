@@ -15,7 +15,7 @@ class SearchUser extends GetView<SearchUserController> {
             resizeToAvoidBottomInset: false,
             body: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                   child: Column(
                     children: [
                       Row(
@@ -51,7 +51,7 @@ class SearchUser extends GetView<SearchUserController> {
                         ],
                       ),
                       const SizedBox(
-                        height: 15.0,
+                        height: 10.0,
                       ),
                       Obx(
                             () => controller.snapShotList.isNotEmpty
@@ -63,9 +63,12 @@ class SearchUser extends GetView<SearchUserController> {
                           itemCount: controller.snapShotList.length,
                           itemBuilder: (context, index) {
                             final user = controller.snapShotList[index];
-                            return CommonListTile(
-                              title: user.get('name'),
-                              subTitle: user.get('email'),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: CommonListTile(
+                                title: user.get('name'),
+                                subTitle: user.get('email'),
+                              ),
                             );
                           },
                           separatorBuilder:
