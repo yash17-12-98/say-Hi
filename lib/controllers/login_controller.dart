@@ -15,16 +15,16 @@ class LoginController extends BaseController {
     super.onInit();
   }
 
-  void onLogin() {
+  void signIn(context) {
     if (formKey.currentState!.validate()) {
-      isLoad.value = true;
-      FirebaseService.instance
-          .signInUserWithEmailAndPassword(
+      load.value = true;
+      FirebaseServices.instance
+          .signInUserWithEmailAndPassWord(
               email: emailController.text, password: pwdController.text)
           .then((value) {
-        isLoad.value = false;
+        load.value = false;
         if (value != null) {
-          Get.toNamed(Routes.profile);
+          Get.toNamed(Routes.home);
         }
       });
     }

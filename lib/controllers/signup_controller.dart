@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -67,23 +66,25 @@ class SignupController extends BaseController {
   Future<void> signup() async {
     Get.focusScope!.unfocus();
     if (formKey.currentState!.validate()) {
-      isLoad.value = true;
+      load.value = true;
       var imgFile = await checkFileImg();
       var isUploaded = await uploadFile(imgFile);
       var imageUrl = await getDownloadedFileUrl(isUploaded);
       Common.logger.d("FILE UPLOADED FOR $imageUrl");
-      FirebaseService.instance
-          .createUserWithEmailAndPassword(
+      FirebaseServices.instance
+          .signUpUserWithEmailAndPassword(
               name: nameController.text,
               imageUrl: imageUrl,
               email: emailController.text,
               password: confirmPwdController.text)
           .then((value) {
-        isLoad.value = false;
+        load.value = false;
         if (value != null) {
           Get.back();
           Common.showSnackBar(
-              title: "SIGNUP", subtitle: "Account created successfully");
+              title: "SIGNUP",
+              subtitle: "Account created successfully",
+              color: Colors.green);
         }
       });
     }

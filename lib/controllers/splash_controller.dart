@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:get/get.dart';
 import '../routes/route.dart';
 import '../utils/util.dart';
-import 'controller.dart';
 
-class SplashController extends BaseController {
+
+class SplashController extends GetxController {
   @override
   void onInit() {
     Timer(const Duration(seconds: 3), manageAuthState);
@@ -12,9 +12,9 @@ class SplashController extends BaseController {
   }
 
   manageAuthState() {
-    switch (FirebaseService.instance.isSignedIn) {
+    switch (FirebaseServices.instance.isSignedIn) {
       case true:
-        return Get.offNamed(Routes.profile);
+        return Get.offNamed(Routes.home);
       case false:
         return Get.offNamed(Routes.login);
     }

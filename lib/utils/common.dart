@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 class Common {
+  static const projectName = 'Say H!';
   static const userCollectionName = 'users';
   static var logger = Logger(
     printer: PrettyPrinter(methodCount: 0),
@@ -15,7 +17,6 @@ class Common {
     final XFile? pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
-
     if (pickedFile != null) {
       return File(pickedFile.path);
     }
@@ -31,5 +32,16 @@ class Common {
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: color,
     );
+  }
+
+  static showToastMessage(message) {
+    Fluttertoast.showToast(
+        msg: message.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

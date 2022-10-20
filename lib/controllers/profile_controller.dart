@@ -19,7 +19,7 @@ class ProfileController extends BaseController {
   }
 
   onSignOut() async {
-    await FirebaseService.instance.userSignOut();
+    await FirebaseServices.instance.userSignOut();
     Get.offNamedUntil(Routes.login, (route) => false);
   }
 }

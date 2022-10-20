@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../constants/constant.dart';
 import '../controllers/controller.dart';
 import '../utils/util.dart';
@@ -59,36 +58,36 @@ class ProfileScreen extends GetView<ProfileController> {
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.nameController,
-                          textInputType: TextInputType.text,
+                          keyboardType: TextInputType.text,
                           hintText: 'Name',
                           validator: Validator.isNameValid,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.emailController,
-                          textInputType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.emailAddress,
                           hintText: 'Email',
                           validator: Validator.isEmailValid,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.pwdController,
-                          textInputType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.visiblePassword,
                           hintText: 'Password',
                           validator: Validator.isPwdValid,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.confirmPwdController,
-                          textInputType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.visiblePassword,
                           hintText: 'Confirm Password',
                           validator: Validator.isPwdValid,
                         ),
@@ -106,7 +105,7 @@ class ProfileScreen extends GetView<ProfileController> {
               ),
             )),
         Obx(() => CommonLoaderOverlay(
-              visible: controller.isLoad.value,
+              visible: controller.load.value,
             ))
       ],
     );

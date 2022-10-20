@@ -70,9 +70,9 @@ class SignupScreen extends GetView<SignupController> {
                               width: 15.0,
                             ),
                             Expanded(
-                              child: CommonTextField(
+                              child: CommonTextFormField(
                                 controller: controller.nameController,
-                                textInputType: TextInputType.text,
+                                keyboardType: TextInputType.text,
                                 hintText: 'Name',
                                 validator: Validator.isNameValid,
                               ),
@@ -82,27 +82,27 @@ class SignupScreen extends GetView<SignupController> {
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.emailController,
-                          textInputType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.emailAddress,
                           hintText: 'Email',
                           validator: Validator.isEmailValid,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.pwdController,
-                          textInputType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.visiblePassword,
                           hintText: 'Password',
                           validator: Validator.isPwdValid,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextField(
+                        CommonTextFormField(
                           controller: controller.confirmPwdController,
-                          textInputType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.visiblePassword,
                           hintText: 'Confirm Password',
                           validator: Validator.isPwdValid,
                         ),
@@ -111,8 +111,37 @@ class SignupScreen extends GetView<SignupController> {
                         ),
                         CommonMaterialButton(
                           color: Colors.blue,
+                          minWidth: Get.width,
                           text: 'Sign Up',
                           onPressed: () => controller.signup(),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't have an account?  ",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                Get.back();
+                              },
+                              child: const Text(
+                                "Login now",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -121,7 +150,7 @@ class SignupScreen extends GetView<SignupController> {
               ),
             )),
         Obx(() => CommonLoaderOverlay(
-              visible: controller.isLoad.value,
+              visible: controller.load.value,
             ))
       ],
     );

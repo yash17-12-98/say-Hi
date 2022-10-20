@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CommonMaterialButton extends StatelessWidget {
   final Color? color;
   final String? text;
+  final double? minWidth;
   final Function()? onPressed;
 
-  const CommonMaterialButton({Key? key, this.color, this.text, this.onPressed})
+  const CommonMaterialButton({Key? key, this.color, this.text, this.onPressed, this.minWidth})
       : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class CommonMaterialButton extends StatelessWidget {
       color: color,
       padding: const EdgeInsets.all(15.0),
       onPressed: onPressed,
-      minWidth: Get.width,
+      minWidth: minWidth,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           side: BorderSide.none),

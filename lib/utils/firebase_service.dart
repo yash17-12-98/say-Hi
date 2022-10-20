@@ -1,93 +1,95 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/model.dart';
-import 'util.dart';
+import 'common.dart';
+import 'database_service.dart';
 
-class FirebaseService {
-  FirebaseService._();
-
-  static final _instance = FirebaseService._();
-
-  static FirebaseService get instance => _instance;
-
+class FirebaseServices {
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  FirebaseServices._();
+
+  static final _instance = FirebaseServices._();
+
+  static FirebaseServices get instance => _instance;
 
   bool get isSignedIn => auth.currentUser != null;
 
-  String get uid => auth.currentUser!.uid;
+  String? get uid => auth.currentUser != null ? auth.currentUser!.uid : null;
 
-  Future<User?> getCurrentUser() async {
-    return auth.currentUser;
-  }
-
-  Future createUserWithEmailAndPassword(
-      {String? name, String? imageUrl, String? email, String? password}) async {
+  Future signUpUserWithEmailAndPassword(
+      {name, imageUrl, email, password}) async {
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-          email: email!, password: password!);
-
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       UserModel userModel = UserModel(
           name: name,
-          imageUrl: imageUrl,
           email: email,
           password: password,
           uid: userCredential.user!.uid);
-      Common.logger.i("User INFO: ${userModel.toMap()}");
-      Common.logger.i("UserCredential: $userCredential");
-      await DatabaseService.addDataToDb(Common.userCollectionName,
-          userCredential.user!.uid, userModel.toMap());
-      await userSignOut();
+      await DatabaseService.instance.addUserDataToDb(
+          collectionName: Common.userCollectionName,
+          docId: userCredential.user!.uid,
+          fields: userModel.toMap());
 
+      await FirebaseServices.instance.userSignOut();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Common.showSnackBar(
-            title: 'Invalid password',
-            subtitle: 'The password provided is too weak.',
+            title: 'Weak Password',
+            subtitle: 'The password provided is too weak',
             color: Colors.red);
       } else if (e.code == 'email-already-in-use') {
         Common.showSnackBar(
-            title: 'Account Exist',
+            title: 'Email Already Exist',
             subtitle: 'The account already exists for that email',
             color: Colors.red);
       } else {
         Common.showSnackBar(
             title: 'Something went wrong',
-            subtitle: e.message,
+            subtitle: e.message.toString(),
             color: Colors.red);
       }
-    } catch (e) {
-      Common.logger.e("Exception: $e");
+      return null;
     }
-    return null;
   }
 
-  Future signInUserWithEmailAndPassword(
-      {String? email, String? password}) async {
+  Future<void> reAuthenticateUser(email, password) async {
+    AuthCredential credential =
+        EmailAuthProvider.credential(email: email, password: password);
+
+    await auth.currentUser!.reauthenticateWithCredential(credential);
+  }
+
+  Future signInUserWithEmailAndPassWord({email, password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email!, password: password!);
-      Common.logger.i("UserCredential: ${userCredential.user}");
+          .signInWithEmailAndPassword(email: email, password: password);
+      Common.logger.d("UserCredential: $userCredential");
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Common.showSnackBar(
-            title: 'No User Found',
+            title: 'No user found',
             subtitle: 'No user found for that email',
             color: Colors.red);
       } else if (e.code == 'wrong-password') {
         Common.showSnackBar(
             title: 'Wrong password',
-            subtitle: 'Wrong password provided for that user.',
+            subtitle: 'Wrong password provided for that user',
             color: Colors.red);
       } else {
-        Common.logger.e("Exception: $e");
+        Common.showSnackBar(
+            title: 'Something went wrong',
+            subtitle: e.message.toString(),
+            color: Colors.red);
       }
+      return null;
     }
-    return null;
   }
 
   Future<void> userSignOut() async {
-    await auth.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }

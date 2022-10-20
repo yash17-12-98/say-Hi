@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:say_hi/screens/search_user.dart';
 import '../bindings/binding.dart';
 import '../screens/screen.dart';
 import 'page_routes.dart';
@@ -18,6 +19,16 @@ List<GetPage> pages = [
     name: Routes.signup,
     page: () => const SignupScreen(),
     binding: SignupBinding(),
+  ),
+  GetPage(
+    name: Routes.home,
+    page: () => const HomeScreen(),
+    binding: HomeBinding(),
+  ),
+  GetPage(
+    name: Routes.searchUser,
+    page: () => const SearchUser(),
+    binding: SearchUserBinding(),
   ),
   GetPage(
     name: Routes.profile,

@@ -10,14 +10,11 @@ class CommonLoaderOverlay extends StatelessWidget {
     return Visibility(
       visible: visible!,
       child: Stack(
-        alignment: Alignment.center,
         children: [
           ModalBarrier(
-            color: Colors.blueAccent.withOpacity(0.2),
+            color: Colors.blue.withOpacity(0.15),
           ),
-          const CircularProgressIndicator(
-            color: Colors.blueAccent,
-          )
+          const Center(child: CircularProgressIndicator())
         ],
       ),
     );
