@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/util.dart';
 
 class CommonListTile extends StatelessWidget {
   final String? title;
@@ -13,7 +14,7 @@ class CommonListTile extends StatelessWidget {
       tileColor: Colors.blue.withOpacity(0.3),
       trailing: TextButton(
         onPressed: () {},
-        child: const Text('Say H!'),
+        child: const Text(Common.projectName),
       ),
       title: Text(title.toString()),
       subtitle: Text(subTitle.toString()),

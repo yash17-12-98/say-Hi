@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/controller.dart';
 import '../routes/route.dart';
+import '../utils/util.dart';
 import '../widgets/common_app_bar.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -12,7 +13,7 @@ class HomeScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: "Say H!",
+        title: Common.projectName,
         subTitle: "Let's find and say H!",
         onPressed: () => exit(0),
         actions: [

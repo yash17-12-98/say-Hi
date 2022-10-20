@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/constant.dart';
+import '../utils/util.dart';
 
 class CommonAppTitle extends StatelessWidget {
   final Color? color;
@@ -17,7 +18,7 @@ class CommonAppTitle extends StatelessWidget {
           scale: 4.7,
         ),
         Text(
-          "Say H!",
+          Common.projectName,
           style: TextStyle(
               color: color, fontWeight: FontWeight.bold, fontSize: 45),
         ),
