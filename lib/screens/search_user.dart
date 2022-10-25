@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:say_hi/models/model.dart';
+import '../models/model.dart';
 import '../routes/route.dart';
 import '../widgets/widget.dart';
 import '../constants/constant.dart';

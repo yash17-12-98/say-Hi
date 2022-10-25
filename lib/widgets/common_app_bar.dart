@@ -22,7 +22,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leadingWidth: 70.0,
+      leadingWidth: 40.0,
       leading: specific == true
           ? Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),

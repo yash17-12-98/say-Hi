@@ -19,6 +19,7 @@ class ProfileController extends BaseController {
   }
 
   onSignOut() async {
+    await SharedPreferenceHelper.prefs!.clear();
     await FirebaseServices.instance.userSignOut();
     Get.offNamedUntil(Routes.login, (route) => false);
   }

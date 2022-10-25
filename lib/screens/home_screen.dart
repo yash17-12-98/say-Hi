@@ -14,7 +14,7 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       appBar: CommonAppBar(
         title: Const.projectName,
-        subTitle: "Let's find and say H!",
+        subTitle: "Don't miss chance to say first H!",
         onPressed: () => exit(0),
         actions: [
           IconButton(
@@ -28,25 +28,50 @@ class HomeScreen extends GetView<HomeController> {
         ],
       ),
       body: SafeArea(
-          child: ListView.builder(
-        padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin),
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: CommonListTile(
-              title: "user.get('name')",
-              subTitle: "user.get('email')",
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () => Get.toNamed(Routes.searchUser),
+              child: CommonTextFormField(
+                hintText: 'Search User',
+                isEnable: false,
+                hintTextStyle:
+                    const TextStyle(color: Colors.grey, fontSize: 15.0),
+                textInputAction: TextInputAction.search,
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    size: 30.0,
+                    color: Colors.blue,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
             ),
-          );
-        },
+            Expanded(
+              child: ListView.builder(
+                padding:
+                    const EdgeInsets.only(bottom: kFloatingActionButtonMargin),
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                itemCount: 20,
+                itemBuilder: (context, index) {
+                  return CommonListTile(
+                    title: "user.get('name')",
+                    subTitle: "user.get('email')",
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.searchUser),
-        child: const Icon(Icons.search),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => Get.toNamed(Routes.searchUser),
+      //   child: const Icon(Icons.search),
+      // ),
     );
   }
 }

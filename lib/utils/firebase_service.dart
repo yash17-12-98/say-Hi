@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:say_hi/utils/shared_preferences_helper.dart';
 import '../constants/constant.dart';
 import '../models/model.dart';
 import 'common.dart';
@@ -39,8 +36,6 @@ class FirebaseServices {
           docId: userCredential.user!.uid,
           fields: userModel.toMap());
 
-      await SharedPreferenceHelper.prefs!.setString('UserModel', jsonEncode(userModel.toMap()));
-
       await FirebaseServices.instance.userSignOut();
       return true;
     } on FirebaseAuthException catch (e) {
@@ -71,12 +66,12 @@ class FirebaseServices {
     await auth.currentUser!.reauthenticateWithCredential(credential);
   }
 
-  Future signInUserWithEmailAndPassWord({email, password}) async {
+  Future<UserCredential?> signInUserWithEmailAndPassWord({email, password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       Common.logger.d("UserCredential: $userCredential");
-      return true;
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Common.showSnackBar(
