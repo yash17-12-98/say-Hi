@@ -41,17 +41,36 @@ class ProfileScreen extends GetView<ProfileController> {
                           child: Obx(
                             () => CircleAvatar(
                               radius: 50,
-                              backgroundImage:
-                                  controller.imageFile.value == null
-                                      ? Image.asset(
-                                          ImagePath.userIcon,
-                                          color: Colors.white,
-                                          scale: 5.5,
-                                        ).image
-                                      : Image.file(
-                                          controller.imageFile.value!,
-                                          fit: BoxFit.fill,
-                                        ).image,
+                              backgroundImage: controller.user.value.imageUrl !=
+                                      null
+                                  ? Image.network(
+                                      controller.user.value.imageUrl.toString(),
+                                      color: Colors.white,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                      scale: 5.5,
+                                    ).image
+                                  : Image.asset(
+                                      ImagePath.userIcon,
+                                      fit: BoxFit.fill,
+                                    ).image,
                             ),
                           ),
                         ),
