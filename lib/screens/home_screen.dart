@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../constants/constant.dart';
 import '../controllers/controller.dart';
 import '../routes/route.dart';
-import '../utils/util.dart';
-import '../widgets/common_app_bar.dart';
+import '../widgets/widget.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomeScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: Common.projectName,
+        title: Const.projectName,
         subTitle: "Let's find and say H!",
         onPressed: () => exit(0),
         actions: [
@@ -27,7 +27,22 @@ class HomeScreen extends GetView<HomeController> {
           ),
         ],
       ),
-      body: SafeArea(child: Container()),
+      body: SafeArea(
+          child: ListView.builder(
+        padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin),
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: CommonListTile(
+              title: "user.get('name')",
+              subTitle: "user.get('email')",
+            ),
+          );
+        },
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.searchUser),
         child: const Icon(Icons.search),

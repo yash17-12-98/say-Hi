@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:say_hi/utils/shared_preferences_helper.dart';
+import '../constants/constant.dart';
 import '../models/model.dart';
 import 'common.dart';
 import 'database_service.dart';
@@ -25,12 +29,17 @@ class FirebaseServices {
       UserModel userModel = UserModel(
           name: name,
           email: email,
+          imageUrl: imageUrl,
           password: password,
           uid: userCredential.user!.uid);
+
+      // SharedPreferenceHelper.prefs.setString(key, value);
       await DatabaseService.instance.addUserDataToDb(
-          collectionName: Common.userCollectionName,
+          collectionName: Const.userCollectionName,
           docId: userCredential.user!.uid,
           fields: userModel.toMap());
+
+      await SharedPreferenceHelper.prefs!.setString('UserModel', jsonEncode(userModel.toMap()));
 
       await FirebaseServices.instance.userSignOut();
       return true;

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:say_hi/bindings/chat_binding.dart';
+import 'package:say_hi/screens/chat_screen.dart';
 import 'package:say_hi/screens/search_user.dart';
 import '../bindings/binding.dart';
 import '../screens/screen.dart';
@@ -34,5 +36,10 @@ List<GetPage> pages = [
     name: Routes.profile,
     page: () => const ProfileScreen(),
     binding: ProfileBinding(),
+  ),
+  GetPage(
+    name: Routes.chat,
+    page: () => const ChatScreen(),
+    binding: ChatBinding(),
   ),
 ];

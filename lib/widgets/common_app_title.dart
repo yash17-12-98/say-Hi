@@ -18,7 +18,7 @@ class CommonAppTitle extends StatelessWidget {
           scale: 4.7,
         ),
         Text(
-          Common.projectName,
+          Const.projectName,
           style: TextStyle(
               color: color, fontWeight: FontWeight.bold, fontSize: 45),
         ),

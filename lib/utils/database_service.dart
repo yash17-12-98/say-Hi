@@ -42,6 +42,21 @@ class DatabaseService {
     }
   }
 
+  Stream getUserLIst() {
+    return FirebaseFirestore.instance
+        .collection('chat-room')
+        .doc('ABC123')
+        .snapshots();
+  }
+
+  Future sendMessage({chatRoomId, message}) async {
+    return await FirebaseFirestore.instance
+        .collection('chat-room')
+        .doc(chatRoomId)
+        .collection('chats')
+        .add(message);
+  }
+
   Future updateUserDataFromDb({collectionName, docId, data}) async {
     try {
       await FirebaseFirestore.instance

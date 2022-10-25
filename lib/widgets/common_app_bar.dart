@@ -5,6 +5,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final String? subTitle;
   final bool? specific;
+  final bool? isUser;
   final void Function()? onPressed;
   final List<Widget>? actions;
 
@@ -14,12 +15,14 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
       this.specific = false,
       this.onPressed,
       this.actions,
-      this.subTitle})
+      this.subTitle,
+      this.isUser = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leadingWidth: 70.0,
       leading: specific == true
           ? Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -38,10 +41,34 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
               ),
             )
-          : IconButton(
-              color: Colors.blue,
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: onPressed ?? Get.back,
+          : InkWell(
+              onTap: onPressed ?? Get.back,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0)),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 12.0),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  Visibility(
+                    visible: isUser!,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.blue,
+                      child: Text(
+                        title![0].toUpperCase(),
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import '../constants/constant.dart';
+import '../models/model.dart';
 import '../utils/storage.dart';
 import '../utils/util.dart';
 import 'controller.dart';
@@ -66,7 +68,19 @@ class SignupController extends BaseController {
   Future<void> signup() async {
     Get.focusScope!.unfocus();
     if (formKey.currentState!.validate()) {
-      load.value = true;
+      // load.value = true;
+      UserModel userModel = UserModel(
+          name: nameController.text,
+          email: emailController.text,
+          // imageUrl: imageUrl,
+          password: confirmPwdController.text,
+          /*uid: userCredential.user!.uid*/);
+      print("encoded data to store :${jsonEncode(userModel.toMap())}");
+      await SharedPreferenceHelper.prefs!.setString('UserModel', jsonEncode(userModel.toMap()));
+       print("GET STORES ${jsonDecode(SharedPreferenceHelper.prefs!.getString('UserModel').toString())}");
+       SharedPreferenceHelper.prefs!.clear();
+      print("GET STORES ${jsonDecode(SharedPreferenceHelper.prefs!.getString('UserModel').toString())}");
+
       var imgFile = await checkFileImg();
       var isUploaded = await uploadFile(imgFile);
       var imageUrl = await getDownloadedFileUrl(isUploaded);

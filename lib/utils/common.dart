@@ -6,8 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 class Common {
-  static const projectName = 'Say H!';
-  static const userCollectionName = 'users';
   static var logger = Logger(
     printer: PrettyPrinter(methodCount: 0),
   );
