@@ -1,8 +1,7 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
-import '../widgets/custom_shape.dart';
+import '../utils/util.dart';
 import '../widgets/widget.dart';
 
 class ChatScreen extends GetView<ChatController> {
@@ -12,88 +11,35 @@ class ChatScreen extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: controller.userModel.value.name,
-        subTitle: controller.userModel.value.email,
+        isUser: true,
+        leadingWidth: 70.0,
+        title: controller.receiver.value.name,
+        subTitle: controller.receiver.value.email,
       ),
       body: SafeArea(
           child: Column(
         children: [
           Expanded(
-            child: ListView.separated(
-                padding:
-                    const EdgeInsets.only(bottom: kFloatingActionButtonMargin),
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                itemCount: 50,
-                itemBuilder: (context, index) {
-                  return index % 2 != 0
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(18),
-                                      bottomLeft: Radius.circular(18),
-                                      bottomRight: Radius.circular(18),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Hi jhfjkhsdfhjskdhfsdhfkjhsdjfhksjdhfkdjhjkdfnvjdxfnvdnfnvkjdnfjknvjkndfjknvjkndjknfvj",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                ),
-                              ),
-                              CustomPaint(painter: CustomShape(Colors.blue)),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(math.pi),
-                                child: CustomPaint(
-                                  painter: CustomShape(Colors.grey[300]!),
-                                ),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(18),
-                                      bottomLeft: Radius.circular(18),
-                                      bottomRight: Radius.circular(18),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "message",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 14),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                      height: 0.0,
-                    )),
+            child: Obx(
+              () => ListView.separated(
+                  padding: const EdgeInsets.only(
+                      bottom: kFloatingActionButtonMargin),
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: controller.chats.length,
+                  itemBuilder: (context, index) {
+                    return controller.chats[index].senderId ==
+                            FirebaseServices.instance.uid
+                        ? CustomRightChatBubble(
+                            message: controller.chats[index].message)
+                        : CustomLeftChatBubble(
+                            message: controller.chats[index].message);
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                        height: 0.0,
+                      )),
+            ),
           ),
           CommonTextFormField(
             controller: controller.msgController,
@@ -107,6 +53,7 @@ class ChatScreen extends GetView<ChatController> {
               ),
               onPressed: () {
                 FocusScope.of(context).unfocus();
+                controller.sendMessage();
               },
             ),
           )
@@ -115,4 +62,3 @@ class ChatScreen extends GetView<ChatController> {
     );
   }
 }
-

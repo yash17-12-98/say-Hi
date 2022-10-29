@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
-import 'package:say_hi/bindings/chat_binding.dart';
-import 'package:say_hi/screens/chat_screen.dart';
-import 'package:say_hi/screens/search_user.dart';
 import '../bindings/binding.dart';
+import '../screens/chat_screen.dart';
 import '../screens/screen.dart';
 import 'page_routes.dart';
 

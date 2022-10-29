@@ -17,7 +17,9 @@ class CommonTextFormField extends StatelessWidget {
   final bool? isEnable;
   final bool? read;
   final bool? scroll;
+  final bool? autofocus;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final Widget? suffix;
   final List<TextInputFormatter>? listTextInput;
   final InputBorder? enabledBorder;
@@ -49,11 +51,14 @@ class CommonTextFormField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.suffix,
     this.onFieldSubmitted,
+    this.autofocus = false,
+    this.prefixIcon,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus!,
       obscureText: isObscure,
       validator: validator,
       controller: controller,
@@ -77,6 +82,7 @@ class CommonTextFormField extends StatelessWidget {
         focusColor: Colors.white,
         isDense: isDense,
         suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
         suffix: suffix,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius!),
@@ -92,5 +98,4 @@ class CommonTextFormField extends StatelessWidget {
       ),
     );
   }
-
 }

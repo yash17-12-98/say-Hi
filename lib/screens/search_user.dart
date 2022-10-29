@@ -17,24 +17,16 @@ class SearchUser extends GetView<SearchUserController> {
             resizeToAvoidBottomInset: false,
             body: SafeArea(
                 child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      SizedBox(
-                        width: 35,
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          color: Colors.blue,
-                          icon: const Icon(Icons.arrow_back_ios),
-                          onPressed: () => Get.back(),
-                        ),
-                      ),
                       Expanded(
                         child: CommonTextFormField(
                           controller: controller.searchController,
                           hintText: 'Search User',
+                          autofocus: true,
                           onFieldSubmitted: controller.onFieldSubmitted,
                           hintTextStyle: const TextStyle(
                               color: Colors.grey, fontSize: 15.0),
@@ -48,8 +40,14 @@ class SearchUser extends GetView<SearchUserController> {
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               controller.searchUserByName(
-                                  controller.searchController);
+                                  controller.searchController.text);
                             },
+                          ),
+                          prefixIcon: IconButton(
+                            padding: EdgeInsets.zero,
+                            color: Colors.blue,
+                            icon: const Icon(Icons.arrow_back_ios),
+                            onPressed: () => Get.back(),
                           ),
                         ),
                       ),
@@ -68,20 +66,16 @@ class SearchUser extends GetView<SearchUserController> {
                             itemCount: controller.snapShotList.length,
                             itemBuilder: (context, index) {
                               final user = controller.snapShotList[index];
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: CommonListTile(
-                                  title: user.get('name'),
-                                  subTitle: user.get('email'),
-                                  tileColor: Colors.blue.withOpacity(0.3),
-                                  onPressed: () => Get.toNamed(Routes.chat,
-                                      arguments: UserModel(
-                                          uid: user.get('uid'),
-                                          name: user.get('name'),
-                                          email: user.get('email'),
-                                          imageUrl: user.get('imageUrl'))),
-                                ),
+                              return CommonListTile(
+                                title: user.get('name'),
+                                subTitle: user.get('email'),
+                                tileColor: Colors.blue.withOpacity(0.3),
+                                onPressed: () => Get.toNamed(Routes.chat,
+                                    arguments: UserModel(
+                                        uid: user.get('uid'),
+                                        name: user.get('name'),
+                                        email: user.get('email'),
+                                        imageUrl: user.get('imageUrl'))),
                               );
                             },
                             separatorBuilder:

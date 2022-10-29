@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:say_hi/utils/common.dart';
+import 'common.dart';
 
 class DatabaseService {
   DatabaseService._();
@@ -47,6 +47,26 @@ class DatabaseService {
         .collection('chat-room')
         .doc('ABC123')
         .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatList(chatRoomId) {
+    return FirebaseFirestore.instance
+        .collection('chat-room')
+        .doc(chatRoomId)
+        .collection('chats')
+        .orderBy('time')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatRoomList(chatRoomId) {
+    return FirebaseFirestore.instance.collection('chat-room').snapshots();
+  }
+
+  Future createChatRoom({chatRoom, chatRoomId}) async {
+    return await FirebaseFirestore.instance
+        .collection('chat-room')
+        .doc(chatRoomId)
+        .set(chatRoom);
   }
 
   Future sendMessage({chatRoomId, message}) async {

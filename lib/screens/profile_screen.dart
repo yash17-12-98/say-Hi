@@ -95,28 +95,6 @@ class ProfileScreen extends GetView<ProfileController> {
                         const SizedBox(
                           height: 20.0,
                         ),
-                        CommonTextFormField(
-                          controller: controller.pwdController,
-                          keyboardType: TextInputType.visiblePassword,
-                          hintText: 'Password',
-                          validator: Validator.isPwdValid,
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        CommonTextFormField(
-                          controller: controller.confirmPwdController,
-                          keyboardType: TextInputType.visiblePassword,
-                          hintText: 'Confirm Password',
-                          validator: Validator.isPwdValid,
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        CommonMaterialButton(
-                            color: Colors.blue,
-                            text: 'Update',
-                            onPressed: () {}),
                       ],
                     ),
                   ),

@@ -1,34 +1,46 @@
-class ChatRoomModel {
-  String? recId;
-  String? recName;
-  String? recEmail;
-  String? recImageUrl;
+class ChatRoom {
+  String? chatRoomId;
+  Users? users;
   String? lastMessage;
   String? lastTime;
 
-  ChatRoomModel(
-      {this.recId,
-      this.recName,
-      this.recEmail,
-      this.recImageUrl,
-      this.lastMessage,
-      this.lastTime});
+  ChatRoom({this.chatRoomId, this.users, this.lastMessage, this.lastTime});
 
-  ChatRoomModel.fromJson(Map<String, dynamic> json) {
-    recId = json['recId'];
-    recName = json['recName'];
-    recEmail = json['recEmail'];
-    recImageUrl = json['recImageUrl'];
+  ChatRoom.fromJson(Map<String, dynamic> json) {
+    chatRoomId = json['chatRoomId'];
+    users = json['users'];
     lastMessage = json['lastMessage'];
     lastTime = json['lastTime'];
   }
 
   Map<String, dynamic> toMap() => {
-        'recId': recId,
-        'recName': recName,
-        'recEmail': recEmail,
-        'recImageUrl': recImageUrl,
+        'chatRoomId': chatRoomId,
+        'users': users,
         'lastMessage': lastMessage,
         'lastTime': lastTime,
+      };
+}
+
+class Users {
+
+}
+
+class First {
+  String? uid;
+  String? name;
+  bool? blocked;
+
+  First({this.uid, this.name, this.blocked});
+
+  First.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    name = json['name'];
+    blocked = json['blocked'];
+  }
+
+  Map<String, dynamic> toMap() => {
+        'uid': uid,
+        'name': name,
+        'blocked': blocked,
       };
 }

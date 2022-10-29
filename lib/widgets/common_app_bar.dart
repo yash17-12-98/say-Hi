@@ -6,6 +6,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? subTitle;
   final bool? specific;
   final bool? isUser;
+  final double? leadingWidth;
   final void Function()? onPressed;
   final List<Widget>? actions;
 
@@ -16,13 +17,14 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
       this.onPressed,
       this.actions,
       this.subTitle,
-      this.isUser = false})
+      this.isUser = false,
+      this.leadingWidth = 40})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leadingWidth: 40.0,
+      leadingWidth: leadingWidth,
       leading: specific == true
           ? Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -43,6 +45,8 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
             )
           : InkWell(
               onTap: onPressed ?? Get.back,
+              splashColor: Colors.blue.withOpacity(0.3),
+              hoverColor: Colors.blue,
               borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(20.0),
                   topRight: Radius.circular(20.0)),

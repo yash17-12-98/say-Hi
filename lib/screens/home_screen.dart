@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constants/constant.dart';
@@ -15,7 +14,7 @@ class HomeScreen extends GetView<HomeController> {
       appBar: CommonAppBar(
         title: Const.projectName,
         subTitle: "Don't miss chance to say first H!",
-        onPressed: () => exit(0),
+        onPressed: () => Get.back(),
         actions: [
           IconButton(
             icon: const Icon(
@@ -58,7 +57,7 @@ class HomeScreen extends GetView<HomeController> {
                 physics: const ScrollPhysics(),
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return CommonListTile(
+                  return const CommonListTile(
                     title: "user.get('name')",
                     subTitle: "user.get('email')",
                   );
