@@ -42,13 +42,6 @@ class DatabaseService {
     }
   }
 
-  Stream getUserLIst() {
-    return FirebaseFirestore.instance
-        .collection('chat-room')
-        .doc('ABC123')
-        .snapshots();
-  }
-
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatList(chatRoomId) {
     return FirebaseFirestore.instance
         .collection('chat-room')
@@ -58,23 +51,35 @@ class DatabaseService {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getChatRoomList(chatRoomId) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatRoomList() {
     return FirebaseFirestore.instance.collection('chat-room').snapshots();
   }
 
   Future createChatRoom({chatRoom, chatRoomId}) async {
-    return await FirebaseFirestore.instance
-        .collection('chat-room')
-        .doc(chatRoomId)
-        .set(chatRoom);
+    try {
+      await FirebaseFirestore.instance
+          .collection('chat-room')
+          .doc(chatRoomId)
+          .set(chatRoom);
+      return true;
+    } catch (e) {
+      Common.logger.e("Exception: $e");
+      return null;
+    }
   }
 
   Future sendMessage({chatRoomId, message}) async {
-    return await FirebaseFirestore.instance
-        .collection('chat-room')
-        .doc(chatRoomId)
-        .collection('chats')
-        .add(message);
+    try {
+      await FirebaseFirestore.instance
+          .collection('chat-room')
+          .doc(chatRoomId)
+          .collection('chats')
+          .add(message);
+      return true;
+    } catch (e) {
+      Common.logger.e("Exception: $e");
+      return null;
+    }
   }
 
   Future updateUserDataFromDb({collectionName, docId, data}) async {

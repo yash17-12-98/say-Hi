@@ -70,6 +70,7 @@ class SearchUser extends GetView<SearchUserController> {
                                 title: user.get('name'),
                                 subTitle: user.get('email'),
                                 tileColor: Colors.blue.withOpacity(0.3),
+                                isTrailingText: true,
                                 onPressed: () => Get.toNamed(Routes.chat,
                                     arguments: UserModel(
                                         uid: user.get('uid'),

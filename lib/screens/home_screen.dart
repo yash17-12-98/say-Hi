@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:say_hi/utils/firebase_service.dart';
 import '../constants/constant.dart';
 import '../controllers/controller.dart';
+import '../models/model.dart';
 import '../routes/route.dart';
 import '../widgets/widget.dart';
 
@@ -13,13 +15,14 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       appBar: CommonAppBar(
         title: Const.projectName,
-        subTitle: "Don't miss chance to say first H!",
+        subTitle: Const.projectSubTitle,
         onPressed: () => Get.back(),
         actions: [
           IconButton(
+            padding: const EdgeInsets.only(right: 15),
             icon: const Icon(
               Icons.person,
-              size: 26.0,
+              size: 25.0,
               color: Colors.blue,
             ),
             onPressed: () => Get.toNamed(Routes.profile),
@@ -50,27 +53,33 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                padding:
-                    const EdgeInsets.only(bottom: kFloatingActionButtonMargin),
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return const CommonListTile(
-                    title: "user.get('name')",
-                    subTitle: "user.get('email')",
-                  );
-                },
+              child: Obx(
+                () => ListView.builder(
+                  padding: const EdgeInsets.only(
+                      bottom: kFloatingActionButtonMargin),
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: controller.chatRooms.length,
+                  itemBuilder: (context, index) {
+                    final chatRoom = controller.chatRooms[index];
+                    return CommonListTile(
+                      title: controller.getReceiver(chatRoom).name,
+                      subTitle: controller.chatRooms[index].lastMessage,
+                      onPressed: () => Get.toNamed(Routes.chat,
+                          arguments: UserModel(
+                              uid: controller.getReceiver(chatRoom).uid,
+                              name: controller.getReceiver(chatRoom).name,
+                              email: controller.getReceiver(chatRoom).email,
+                              imageUrl:
+                                  controller.getReceiver(chatRoom).imageUrl)),
+                    );
+                  },
+                ),
               ),
             ),
           ],
         ),
       )),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => Get.toNamed(Routes.searchUser),
-      //   child: const Icon(Icons.search),
-      // ),
     );
   }
 }

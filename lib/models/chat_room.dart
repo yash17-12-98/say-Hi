@@ -1,46 +1,59 @@
 class ChatRoom {
   String? chatRoomId;
-  Users? users;
+  List<Users>? users;
   String? lastMessage;
-  String? lastTime;
+  int? lastTime;
 
   ChatRoom({this.chatRoomId, this.users, this.lastMessage, this.lastTime});
 
   ChatRoom.fromJson(Map<String, dynamic> json) {
     chatRoomId = json['chatRoomId'];
-    users = json['users'];
+    if (json['users'] != null) {
+      users = <Users>[];
+      json['users'].forEach((v) {
+        users!.add(Users.fromJson(v));
+      });
+    }
     lastMessage = json['lastMessage'];
     lastTime = json['lastTime'];
   }
 
-  Map<String, dynamic> toMap() => {
-        'chatRoomId': chatRoomId,
-        'users': users,
-        'lastMessage': lastMessage,
-        'lastTime': lastTime,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['chatRoomId'] = chatRoomId;
+    if (users != null) {
+      data['users'] = users!.map((v) => v.toJson()).toList();
+    }
+    data['lastMessage'] = lastMessage;
+    data['lastTime'] = lastTime;
+    return data;
+  }
 }
 
 class Users {
-
-}
-
-class First {
   String? uid;
   String? name;
+  String? email;
+  String? imageUrl;
   bool? blocked;
 
-  First({this.uid, this.name, this.blocked});
+  Users({this.uid, this.name, this.email, this.imageUrl, this.blocked});
 
-  First.fromJson(Map<String, dynamic> json) {
+  Users.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     name = json['name'];
+    email = json['email'];
+    imageUrl = json['imageUrl'];
     blocked = json['blocked'];
   }
 
-  Map<String, dynamic> toMap() => {
-        'uid': uid,
-        'name': name,
-        'blocked': blocked,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['name'] = name;
+    data['email'] = email;
+    data['imageUrl'] = imageUrl;
+    data['blocked'] = blocked;
+    return data;
+  }
 }

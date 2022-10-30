@@ -11,15 +11,12 @@ class ChatController extends BaseController {
   Rx<UserModel> receiver = UserModel().obs;
   Rx<UserModel> sender = UserModel().obs;
   RxList<Message> chats = RxList<Message>();
+  RxList<Users> chatUser = RxList<Users>();
 
   @override
   void onInit() {
-    receiver.value = Get.arguments;
     initData();
     bindStream();
-    Common.logger.d("receiver: ${receiver.value.toMap()}");
-    Common.logger.d("sender: ${sender.value.toMap()}");
-    Common.logger.d("firebse uid: ${FirebaseServices.instance.uid}");
     super.onInit();
   }
 
@@ -28,9 +25,22 @@ class ChatController extends BaseController {
   }
 
   initData() {
+    receiver.value = Get.arguments;
     var jsonData = jsonDecode(
         SharedPreferenceHelper.prefs!.getString(Const.saveUser).toString());
     sender.value = UserModel.fromJson(jsonData);
+    chatUser.add(Users(
+        name: sender.value.name,
+        uid: sender.value.uid,
+        email: sender.value.email,
+        imageUrl: sender.value.imageUrl,
+        blocked: false));
+    chatUser.add(Users(
+        name: receiver.value.name,
+        uid: receiver.value.uid,
+        email: receiver.value.email,
+        imageUrl: receiver.value.imageUrl,
+        blocked: false));
   }
 
   Stream<List<Message>> renderChat() {
@@ -49,7 +59,16 @@ class ChatController extends BaseController {
     }
   }
 
-  Future sendMessage() async {
+  bool checkChatRoomExist() {
+    if (chats.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  Future createChatAndSendMessage() async {
+    String chatRoomId = getChatRoomIdByUser(
+        sender.value.name.toString(), receiver.value.name.toString());
     Message message = Message(
         message: msgController.text,
         senderId: sender.value.uid,
@@ -57,13 +76,35 @@ class ChatController extends BaseController {
         recId: receiver.value.uid,
         recName: receiver.value.name,
         time: DateTime.now().microsecondsSinceEpoch);
-
-    String chatRoomId = getChatRoomIdByUser(
-        sender.value.name.toString(), receiver.value.name.toString());
-    // await DatabaseService.instance.createChatRoom(chatRoomId: chatRoomId);
-
-    await DatabaseService.instance
-        .sendMessage(chatRoomId: chatRoomId, message: message.toMap());
+    Common.logger.i("Message: ${message.toMap()}");
+    if (checkChatRoomExist()) {
+      print("CHAT ROOM ALREADY EXIST");
+      createChatRoom(chatRoomId, message);
+    } else {
+      print("CHAT ROOM NOT EXIST");
+      sendMessage(chatRoomId, message);
+    }
     msgController.clear();
+  }
+
+  Future createChatRoom(chatRoomId, message) async {
+    ChatRoom chatRoom = ChatRoom(
+        chatRoomId: chatRoomId,
+        users: chatUser.toJson(),
+        lastMessage: msgController.text,
+        lastTime: DateTime.now().microsecondsSinceEpoch);
+    Common.logger.i("Chat Room: ${chatRoom.toJson()}");
+
+    bool created = await DatabaseService.instance
+        .createChatRoom(chatRoomId: chatRoomId, chatRoom: chatRoom.toJson());
+
+    if (created) {
+      await sendMessage(chatRoomId, message);
+    }
+  }
+
+  Future sendMessage(chatRoomId, message) async {
+    return await DatabaseService.instance
+        .sendMessage(chatRoomId: chatRoomId, message: message.toMap());
   }
 }

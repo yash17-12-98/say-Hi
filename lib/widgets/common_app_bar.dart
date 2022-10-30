@@ -53,7 +53,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
               child: Row(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(left: 12.0),
+                    padding: EdgeInsets.only(left: 15.0),
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: Colors.blue,

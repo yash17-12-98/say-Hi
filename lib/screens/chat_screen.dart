@@ -53,7 +53,7 @@ class ChatScreen extends GetView<ChatController> {
               ),
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                controller.sendMessage();
+                controller.createChatAndSendMessage();
               },
             ),
           )
