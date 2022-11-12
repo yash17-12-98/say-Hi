@@ -68,6 +68,19 @@ class DatabaseService {
     }
   }
 
+  Future updateChatRoom({data, chatRoomId}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('chat-room')
+          .doc(chatRoomId)
+          .update(data);
+      return true;
+    } catch (e) {
+      Common.logger.e("Exception: $e");
+      return null;
+    }
+  }
+
   Future sendMessage({chatRoomId, message}) async {
     try {
       await FirebaseFirestore.instance

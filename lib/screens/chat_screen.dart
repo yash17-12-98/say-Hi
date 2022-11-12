@@ -21,24 +21,25 @@ class ChatScreen extends GetView<ChatController> {
         children: [
           Expanded(
             child: Obx(
-              () => ListView.separated(
-                  padding: const EdgeInsets.only(
-                      bottom: kFloatingActionButtonMargin),
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemCount: controller.chats.length,
-                  itemBuilder: (context, index) {
-                    return controller.chats[index].senderId ==
-                            FirebaseServices.instance.uid
-                        ? CustomRightChatBubble(
-                            message: controller.chats[index].message)
-                        : CustomLeftChatBubble(
-                            message: controller.chats[index].message);
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                        height: 0.0,
-                      )),
+              () => SingleChildScrollView(
+                reverse: true,
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemCount: controller.chats.length,
+                    itemBuilder: (context, index) {
+                      return controller.chats[index].senderId ==
+                              FirebaseServices.instance.uid
+                          ? CustomRightChatBubble(
+                              message: controller.chats[index].message)
+                          : CustomLeftChatBubble(
+                              message: controller.chats[index].message);
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                          height: 0.0,
+                        )),
+              ),
             ),
           ),
           CommonTextFormField(
@@ -51,10 +52,7 @@ class ChatScreen extends GetView<ChatController> {
                 size: 30.0,
                 color: Colors.blue,
               ),
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                controller.createChatAndSendMessage();
-              },
+              onPressed: () => controller.createChatAndSendMessage(),
             ),
           )
         ],

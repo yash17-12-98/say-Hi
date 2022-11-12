@@ -1,4 +1,4 @@
-class Message {
+class ChatMessage {
   String? message;
   String? senderId;
   String? senderName;
@@ -7,7 +7,7 @@ class Message {
   String? lastMessage;
   int? time;
 
-  Message(
+  ChatMessage(
       {this.message,
       this.senderId,
       this.senderName,
@@ -16,7 +16,7 @@ class Message {
       this.lastMessage,
       this.time});
 
-  Message.fromJson(Map<String, dynamic> json) {
+  ChatMessage.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     senderId = json['senderId'];
     senderName = json['senderName'];

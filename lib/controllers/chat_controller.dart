@@ -10,7 +10,8 @@ class ChatController extends BaseController {
   final TextEditingController msgController = TextEditingController();
   Rx<UserModel> receiver = UserModel().obs;
   Rx<UserModel> sender = UserModel().obs;
-  RxList<Message> chats = RxList<Message>();
+  RxList<ChatMessage> chats = RxList<ChatMessage>();
+  RxList<LastMessage> lastMessage = RxList<LastMessage>();
   RxList<Users> chatUser = RxList<Users>();
 
   @override
@@ -43,12 +44,12 @@ class ChatController extends BaseController {
         blocked: false));
   }
 
-  Stream<List<Message>> renderChat() {
+  Stream<List<ChatMessage>> renderChat() {
     return DatabaseService.instance
         .getChatList(getChatRoomIdByUser(
-            sender.value.name.toString(), receiver.value.name.toString()))
+            sender.value.uid.toString(), receiver.value.uid.toString()))
         .map((event) =>
-            event.docs.map((doc) => Message.fromJson(doc.data())).toList());
+            event.docs.map((doc) => ChatMessage.fromJson(doc.data())).toList());
   }
 
   String getChatRoomIdByUser(String a, String b) {
@@ -68,22 +69,31 @@ class ChatController extends BaseController {
 
   Future createChatAndSendMessage() async {
     String chatRoomId = getChatRoomIdByUser(
-        sender.value.name.toString(), receiver.value.name.toString());
-    Message message = Message(
+        sender.value.uid.toString(), receiver.value.uid.toString());
+
+    ChatMessage message = ChatMessage(
         message: msgController.text,
         senderId: sender.value.uid,
         senderName: sender.value.name,
         recId: receiver.value.uid,
         recName: receiver.value.name,
+        lastMessage: msgController.text,
         time: DateTime.now().microsecondsSinceEpoch);
-    Common.logger.i("Message: ${message.toMap()}");
+
+    lastMessage.add(LastMessage(
+        uid: FirebaseServices.instance.uid, message: msgController.text));
+
+    Common.logger.i("Chat Message: ${message.toMap()}");
+    Common.logger.i("Last Message: ${lastMessage.toJson()}");
+
     if (checkChatRoomExist()) {
-      print("CHAT ROOM ALREADY EXIST");
-      createChatRoom(chatRoomId, message);
+      Common.logger.d("CHAT ROOM ALREADY EXIST");
+      await sendMessage(chatRoomId, message);
     } else {
-      print("CHAT ROOM NOT EXIST");
-      sendMessage(chatRoomId, message);
+      Common.logger.d("CHAT ROOM NOT EXIST");
+      await createChatRoom(chatRoomId, message);
     }
+
     msgController.clear();
   }
 
@@ -91,7 +101,7 @@ class ChatController extends BaseController {
     ChatRoom chatRoom = ChatRoom(
         chatRoomId: chatRoomId,
         users: chatUser.toJson(),
-        lastMessage: msgController.text,
+        lastMessage: lastMessage.toJson(),
         lastTime: DateTime.now().microsecondsSinceEpoch);
     Common.logger.i("Chat Room: ${chatRoom.toJson()}");
 
@@ -104,6 +114,12 @@ class ChatController extends BaseController {
   }
 
   Future sendMessage(chatRoomId, message) async {
+    await DatabaseService.instance.updateChatRoom(
+        chatRoomId: chatRoomId,
+        data: ChatRoom(
+                lastMessage: lastMessage.toJson(),
+                lastTime: DateTime.now().microsecondsSinceEpoch)
+            .toJson());
     return await DatabaseService.instance
         .sendMessage(chatRoomId: chatRoomId, message: message.toMap());
   }

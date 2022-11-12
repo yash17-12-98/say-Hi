@@ -21,6 +21,7 @@ class CommonTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final Widget? suffix;
+  final Color? fillColor;
   final List<TextInputFormatter>? listTextInput;
   final InputBorder? enabledBorder;
   final Function(String)? onChanged;
@@ -53,6 +54,7 @@ class CommonTextFormField extends StatelessWidget {
     this.onFieldSubmitted,
     this.autofocus = false,
     this.prefixIcon,
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class CommonTextFormField extends StatelessWidget {
           scroll == true ? const EdgeInsets.only(bottom: 300) : EdgeInsets.zero,
       // multiLine == false ? null : [LengthLimitingTextInputFormatter(500),FilteringTextInputFormatter.digitsOnly],
       // style: CustomTextStyle.textFieldTextStyle,
+
       keyboardType: keyboardType,
       maxLines: multiLine == true ? 9 : 1,
       onChanged: onChanged,
@@ -76,6 +79,8 @@ class CommonTextFormField extends StatelessWidget {
       textCapitalization: textCapitalization!,
       onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(
+        fillColor: fillColor,
+        // contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
         // contentPadding: isPadding!
         //     ? const EdgeInsets.fromLTRB(20, 0, 12, 0)
         //     : const EdgeInsets.fromLTRB(20, 0, 12, 30),

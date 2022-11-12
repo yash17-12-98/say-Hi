@@ -1,7 +1,7 @@
 class ChatRoom {
   String? chatRoomId;
   List<Users>? users;
-  String? lastMessage;
+  List<LastMessage>? lastMessage;
   int? lastTime;
 
   ChatRoom({this.chatRoomId, this.users, this.lastMessage, this.lastTime});
@@ -14,7 +14,12 @@ class ChatRoom {
         users!.add(Users.fromJson(v));
       });
     }
-    lastMessage = json['lastMessage'];
+    if (json['lastMessage'] != null) {
+      lastMessage = <LastMessage>[];
+      json['lastMessage'].forEach((v) {
+        lastMessage!.add(LastMessage.fromJson(v));
+      });
+    }
     lastTime = json['lastTime'];
   }
 
@@ -24,8 +29,29 @@ class ChatRoom {
     if (users != null) {
       data['users'] = users!.map((v) => v.toJson()).toList();
     }
-    data['lastMessage'] = lastMessage;
+    if (lastMessage != null) {
+      data['lastMessage'] = lastMessage!.map((v) => v.toJson()).toList();
+    }
     data['lastTime'] = lastTime;
+    return data;
+  }
+}
+
+class LastMessage {
+  String? uid;
+  String? message;
+
+  LastMessage({this.uid, this.message});
+
+  LastMessage.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['message'] = message;
     return data;
   }
 }

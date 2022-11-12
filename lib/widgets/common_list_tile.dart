@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/constant.dart';
 
 class CommonListTile extends StatelessWidget {
@@ -21,7 +20,7 @@ class CommonListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.only(left: 10),
+      contentPadding: const EdgeInsets.only(left: 10, right: 10.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       tileColor: tileColor ?? Colors.transparent,
       selectedTileColor: Colors.blue.withOpacity(0.3),
@@ -38,26 +37,42 @@ class CommonListTile extends StatelessWidget {
               const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
-      // trailing: TextButton(
-      //   onPressed: onPressed,
-      //   child: const Text(Const.projectName),
-      // ),
-      trailing: isTrailingText == false
-          ? IconButton(
-              padding: EdgeInsets.zero,
-              icon: const Icon(
-                Icons.arrow_forward_ios,
-                size: 20.0,
-                color: Colors.blue,
-              ),
-              onPressed: onPressed,
-            )
-          : TextButton(
+      trailing: isTrailingText == true
+          ? TextButton(
               onPressed: onPressed,
               child: const Text(Const.projectName),
+            )
+          : null,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title.toString()),
+          Visibility(
+            visible: isTrailingText == false,
+            child: const Text(
+              "3:00 A.M",
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
             ),
-      title: Text(title.toString()),
-      subtitle: Text(subTitle.toString()),
+          ),
+        ],
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: Text(subTitle.toString())),
+          Visibility(
+            visible: isTrailingText == false,
+            child: const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.blue,
+              size: 17.0,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -6,9 +6,14 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? subTitle;
   final bool? specific;
   final bool? isUser;
+  final bool? isHome;
+  final double? toolBarHeight;
+  final ShapeBorder? shape;
+  final PreferredSizeWidget? bottom;
   final double? leadingWidth;
   final void Function()? onPressed;
   final List<Widget>? actions;
+  final Color? backgroundColor;
 
   const CommonAppBar(
       {Key? key,
@@ -18,7 +23,12 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
       this.actions,
       this.subTitle,
       this.isUser = false,
-      this.leadingWidth = 40})
+      this.leadingWidth = 40,
+      this.bottom,
+      this.backgroundColor,
+      this.shape,
+      this.isHome = false,
+      this.toolBarHeight})
       : super(key: key);
 
   @override
@@ -52,11 +62,11 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                   topRight: Radius.circular(20.0)),
               child: Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
                     child: Icon(
                       Icons.arrow_back_ios,
-                      color: Colors.blue,
+                      color: isHome == false ? Colors.blue : Colors.white,
                     ),
                   ),
                   Visibility(
@@ -79,18 +89,24 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
         children: [
           Text(
             title.toString(),
-            style: const TextStyle(color: Colors.blue, fontSize: 17),
+            style: TextStyle(
+                color: isHome == true ? Colors.white : Colors.blue,
+                fontSize: 17),
           ),
           subTitle != null
               ? Text(
                   subTitle.toString(),
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                      color: isHome == true ? Colors.white70 : Colors.grey,
+                      fontSize: 12),
                 )
               : Container(),
         ],
       ),
+      bottom: bottom,
       elevation: 0.0,
-      backgroundColor: Colors.transparent,
+      shape: shape,
+      backgroundColor: backgroundColor ?? Colors.transparent,
       titleTextStyle: const TextStyle(
           color: Colors.blue, fontSize: 25.0, fontWeight: FontWeight.w500),
       actions: actions,
@@ -98,5 +114,5 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(toolBarHeight ?? kToolbarHeight);
 }

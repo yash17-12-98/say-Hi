@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import '../constants/constant.dart';
 import '../utils/storage.dart';
 import '../utils/util.dart';
 import 'controller.dart';
@@ -55,12 +54,12 @@ class SignupController extends BaseController {
         : null;
   }
 
-  checkFileImg() async {
+  Future checkFileImg() async {
     if (imageFile.value != null) {
       return imageFile.value;
     }
-    imageFile.value = await getImageFileFromAssets(ImagePath.userIcon);
-    return imageFile.value;
+    // imageFile.value = await getImageFileFromAssets(ImagePath.userIcon);
+    return null;
   }
 
   Future<void> signup() async {

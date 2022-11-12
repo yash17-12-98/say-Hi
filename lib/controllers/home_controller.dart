@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/model.dart';
@@ -11,7 +13,6 @@ class HomeController extends BaseController {
 
   @override
   void onInit() {
-    print("Init");
     bindStream();
     super.onInit();
   }
@@ -23,12 +24,14 @@ class HomeController extends BaseController {
   Users getReceiver(chatRooms) {
     return chatRooms.users!
         .where((element) => element.uid != FirebaseServices.instance.uid)
-        .single;
+        .last;
   }
 
   Stream<List<ChatRoom>> renderChatRoom() {
-    return DatabaseService.instance.getChatRoomList().map((event) =>
-        event.docs.map((doc) => ChatRoom.fromJson(doc.data())).toList());
+    return DatabaseService.instance.getChatRoomList().map((event) => event.docs
+        .where((element) => element.exists)
+        .map((doc) => ChatRoom.fromJson(doc.data()))
+        .toList());
   }
 
   @override
