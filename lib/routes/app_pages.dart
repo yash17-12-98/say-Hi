@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import '../bindings/binding.dart';
-import '../screens/chat_screen.dart';
 import '../screens/screen.dart';
 import 'page_routes.dart';
 

@@ -51,6 +51,20 @@ class DatabaseService {
         .snapshots();
   }
 
+  Future updateChatList({data, chatRoomId, chatId}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('chat-room')
+          .doc(chatRoomId)
+          .collection('chats')
+          .doc();
+      return true;
+    } catch (e) {
+      Common.logger.e("Exception: $e");
+      return null;
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatRoomList() {
     return FirebaseFirestore.instance.collection('chat-room').snapshots();
   }

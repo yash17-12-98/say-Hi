@@ -28,9 +28,11 @@ class ChatScreen extends GetView<ChatController> {
                     physics: const ScrollPhysics(),
                     itemCount: controller.chats.length,
                     itemBuilder: (context, index) {
+                      // controller.updateSeenMessage(controller.chats[index]);
                       return controller.chats[index].senderId ==
                               FirebaseServices.instance.uid
                           ? CustomRightChatBubble(
+                              seen: controller.chats[index].seen,
                               message: controller.chats[index].message)
                           : CustomLeftChatBubble(
                               message: controller.chats[index].message);

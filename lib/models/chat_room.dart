@@ -40,18 +40,21 @@ class ChatRoom {
 class LastMessage {
   String? uid;
   String? message;
+  bool? seen;
 
-  LastMessage({this.uid, this.message});
+  LastMessage({this.uid, this.message, this.seen});
 
   LastMessage.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     message = json['message'];
+    seen = json['seen'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['uid'] = uid;
     data['message'] = message;
+    data['seen'] = seen;
     return data;
   }
 }

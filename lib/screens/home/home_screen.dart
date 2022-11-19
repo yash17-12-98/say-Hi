@@ -79,46 +79,36 @@ class HomeScreen extends GetView<HomeController> {
                     final chatRoom = controller.chatRooms[index];
 
                     return chatRoom.lastMessage!.last.uid ==
-                                FirebaseServices.instance.uid
-                            ? RightChatRoomTile(
-                                name: controller.getReceiver(chatRoom).name,
-                                lastMessage: controller
-                                    .chatRooms[index].lastMessage!.last.message,
-                                onTap: () => Get.toNamed(Routes.chat,
-                                    arguments: UserModel(
-                                        uid: controller
-                                            .getReceiver(chatRoom)
-                                            .uid,
-                                        name: controller
-                                            .getReceiver(chatRoom)
-                                            .name,
-                                        email: controller
-                                            .getReceiver(chatRoom)
-                                            .email,
-                                        imageUrl: controller
-                                            .getReceiver(chatRoom)
-                                            .imageUrl)),
-                              )
-                            : LeftChatRoomTile(
-                                name: controller.getReceiver(chatRoom).name,
-                                lastMessage: chatRoom.lastMessage!.last.message,
-                                count: chatRoom.lastMessage!.length.toString(),
-                                onTap: () => Get.toNamed(Routes.chat,
-                                    arguments: UserModel(
-                                        uid: controller
-                                            .getReceiver(chatRoom)
-                                            .uid,
-                                        name: controller
-                                            .getReceiver(chatRoom)
-                                            .name,
-                                        email: controller
-                                            .getReceiver(chatRoom)
-                                            .email,
-                                        imageUrl: controller
-                                            .getReceiver(chatRoom)
-                                            .imageUrl)),
-                              );
-                        /*InkWell(
+                            FirebaseServices.instance.uid
+                        ? RightChatRoomTile(
+                            name: controller.getReceiver(chatRoom).name,
+                            lastMessage: controller
+                                .chatRooms[index].lastMessage!.last.message,
+                            onTap: () => Get.toNamed(Routes.chat,
+                                arguments: UserModel(
+                                    uid: controller.getReceiver(chatRoom).uid,
+                                    name: controller.getReceiver(chatRoom).name,
+                                    email:
+                                        controller.getReceiver(chatRoom).email,
+                                    imageUrl: controller
+                                        .getReceiver(chatRoom)
+                                        .imageUrl)),
+                          )
+                        : LeftChatRoomTile(
+                            name: controller.getReceiver(chatRoom).name,
+                            lastMessage: chatRoom.lastMessage!.last.message,
+                            count: chatRoom.lastMessage!.length.toString(),
+                            onTap: () => Get.toNamed(Routes.chat,
+                                arguments: UserModel(
+                                    uid: controller.getReceiver(chatRoom).uid,
+                                    name: controller.getReceiver(chatRoom).name,
+                                    email:
+                                        controller.getReceiver(chatRoom).email,
+                                    imageUrl: controller
+                                        .getReceiver(chatRoom)
+                                        .imageUrl)),
+                          );
+                    /*InkWell(
                             onTap: () => Get.toNamed(Routes.chat,
                                 arguments: UserModel(
                                     uid: controller.getReceiver(chatRoom).uid,
@@ -221,33 +211,27 @@ class HomeScreen extends GetView<HomeController> {
                     height: 10.0,
                   ),
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                        child: Image.asset(
-                      ImagePath.think,
-                      scale: 1.3,
-                    )),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    const Text(
-                      "No Hi-Mate Here",
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 25,
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 7.0,
-                    ),
-                    const Text(
-                      "Search and chat with Hi-mate",
-                      style: TextStyle(color: Colors.grey, fontSize: 17),
-                    ),
-                  ],
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "No Chat Found",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 25,
+                            letterSpacing: 3,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 7.0,
+                      ),
+                      Text(
+                        "Search and chat with Hi-mate",
+                        style: TextStyle(color: Colors.grey, fontSize: 17),
+                      ),
+                    ],
+                  ),
                 ),
         ),
       )),

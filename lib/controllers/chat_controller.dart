@@ -6,7 +6,7 @@ import '../models/model.dart';
 import '../utils/util.dart';
 import 'controller.dart';
 
-class ChatController extends BaseController {
+class ChatController extends BaseController with WidgetsBindingObserver {
   final TextEditingController msgController = TextEditingController();
   Rx<UserModel> receiver = UserModel().obs;
   Rx<UserModel> sender = UserModel().obs;
@@ -16,13 +16,56 @@ class ChatController extends BaseController {
 
   @override
   void onInit() {
+    WidgetsBinding.instance.addObserver(this);
     initData();
     bindStream();
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        seen.value = true;
+        Common.logger.d("app in resumed ${seen.value}");
+        break;
+        // return await updateSeenMessage();
+      case AppLifecycleState.inactive:
+        seen.value = false;
+        Common.logger.d("app in inactive ${seen.value}");
+        break;
+      case AppLifecycleState.paused:
+        seen.value = false;
+        Common.logger.d("app in paused ${seen.value}");
+        break;
+      case AppLifecycleState.detached:
+        seen.value = false;
+        Common.logger.d("app in detached ${seen.value}");
+        break;
+    }
+  }
+
   bindStream() {
     chats.bindStream(renderChat());
+  }
+
+  updateSeenMessage(chatId) async {
+    String chatRoomId = getChatRoomIdByUser(
+        sender.value.uid.toString(), receiver.value.uid.toString());
+    Common.logger.d(
+        "Receiver Id: ${chats.last.recId} Receiver Name: ${chats.last.recName}");
+    if (chats.last.recId == FirebaseServices.instance.uid) {
+      await DatabaseService.instance.updateChatList(
+          chatRoomId: chatRoomId,
+          data: ChatMessage(seen: true).toMap(),
+          chatId: chatId);
+      Common.logger.d("Message Updated");
+    }
   }
 
   initData() {
@@ -78,10 +121,13 @@ class ChatController extends BaseController {
         recId: receiver.value.uid,
         recName: receiver.value.name,
         lastMessage: msgController.text,
-        time: DateTime.now().microsecondsSinceEpoch);
+        time: DateTime.now().microsecondsSinceEpoch,
+        seen: seen.value);
 
     lastMessage.add(LastMessage(
-        uid: FirebaseServices.instance.uid, message: msgController.text));
+        uid: FirebaseServices.instance.uid,
+        message: msgController.text,
+        seen: seen.value));
 
     Common.logger.i("Chat Message: ${message.toMap()}");
     Common.logger.i("Last Message: ${lastMessage.toJson()}");
@@ -122,5 +168,10 @@ class ChatController extends BaseController {
             .toJson());
     return await DatabaseService.instance
         .sendMessage(chatRoomId: chatRoomId, message: message.toMap());
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
   }
 }
